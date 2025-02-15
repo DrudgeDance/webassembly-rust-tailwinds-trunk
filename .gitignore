@@ -7,6 +7,21 @@ Cargo.lock
 /frontend/dist/
 /frontend/pkg/
 
+# Node.js
+node_modules/
+**/node_modules/
+.npm
+.yarn-integrity
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # Development environment
 .env
 .env.local
