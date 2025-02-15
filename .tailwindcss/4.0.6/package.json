@@ -1,0 +1,31 @@
+{
+  "name": "ui-components",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "rm -rf dist/yarn && node build.mjs && wasm-pack build --target web --out-dir dist/yarn/pkg && serve dist/yarn -p 3000",
+    "dev:trunk": "rm -rf dist/trunk && TRUNK=true trunk serve",
+    "dev:trunk:debug": "rm -rf dist/trunk && RUSTFLAGS='-A warnings -C opt-level=0' RUST_BACKTRACE=1 TRUNK=true trunk serve --log debug",
+    "build:release": "rm -rf dist/release && RUSTFLAGS='-C opt-level=3' NODE_ENV=production node build.mjs && wasm-pack build --target web --out-dir dist/release/web/pkg --release",
+    "build:desktop": "rm -rf dist/release && RUSTFLAGS='-C opt-level=3' NODE_ENV=production node build.mjs && wasm-pack build --target bundler --out-dir dist/release/desktop/pkg --release",
+    "build:test": "rm -rf dist/test && node build.mjs && wasm-pack build --target web --out-dir dist/test/pkg --dev",
+    "watch:css": "node build.mjs --watch",
+    "build": "node build.mjs",
+    "serve": "serve dist/yarn -p 3000",
+    "serve:release": "serve dist/release/web -p 3000",
+    "clean": "rm -rf dist/*",
+    "clean:dev": "rm -rf dist/yarn",
+    "clean:trunk": "rm -rf dist/trunk"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.6",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.38",
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "packageManager": "yarn@1.22.22",
+  "license": "MIT"
+}
