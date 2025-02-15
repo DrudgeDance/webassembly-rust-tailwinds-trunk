@@ -1,0 +1,29 @@
+[package]
+name = "frontend"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+leptos = { workspace = true, features = ["csr"] }
+leptos_meta.workspace = true
+leptos_router.workspace = true
+serde.workspace = true
+cfg-if.workspace = true
+
+# Additional dependencies for browser/WASM
+console_log = "1.0"
+log = "0.4"
+console_error_panic_hook = "0.1"
+wasm-bindgen = "0.2"
+web-sys = { version = "0.3", features = ["Window", "Document", "Element"] }
+
+[features]
+hydrate = ["leptos/hydrate"]
+ssr = ["leptos/ssr"]
+csr = ["leptos/csr"]
+default = ["csr"]
+
+[package.metadata.cargo-all-features]
+denylist = ["hydrate", "ssr"]
+skip_feature_sets = [["hydrate", "ssr"]]

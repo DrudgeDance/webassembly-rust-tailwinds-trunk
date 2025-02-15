@@ -1,0 +1,45 @@
+# Rust build artifacts
+/target/
+**/target/
+Cargo.lock
+
+# Frontend build artifacts
+/frontend/dist/
+/frontend/pkg/
+
+# Development environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+thumbs.db
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Optional: local configuration files
+*.local.rs
+config.local.*
+
+# Trunk artifacts
+.trunk/
+**/dist/
+
+# WASM build artifacts
+*.wasm
+*.wasm.map
+*.wasm.d.ts
+
+# System Files
+.DS_Store
+Thumbs.db 
