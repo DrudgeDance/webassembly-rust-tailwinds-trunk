@@ -1,12 +1,12 @@
 # Leptos Full-Stack Application
 
-A modern, high-performance full-stack Rust web application built with WebAssembly, Rust, and Tailwind CSS. This project uses Trunk as the build tool and development server (instead of cargo-leptos) for an optimized WebAssembly development experience, combining Leptos for the frontend and Axum for the backend.
+A modern, high-performance full-stack Rust web application built with WebAssembly, Rust, and Tailwind CSS v4.0.6. This project uses Trunk as the build tool and development server (instead of cargo-leptos) for an optimized WebAssembly development experience, combining Leptos for the frontend and Axum for the backend.
 
 ## Tech Stack
 
 - **WebAssembly (Wasm)** - Compile Rust to WebAssembly for near-native performance in the browser
 - **Rust** - Full-stack type-safe development with memory safety guarantees
-- **Tailwind CSS** - Utility-first CSS framework for modern, responsive design
+- **Tailwind CSS v4.0.6** - Latest utility-first CSS framework for modern, responsive design
 - **Trunk** - Modern build tool and development server optimized for Rust/Wasm applications
 - **Leptos** - Reactive web framework for building web applications in Rust
 - **Axum** - Ergonomic and modular web framework for backend development
@@ -22,7 +22,7 @@ A modern, high-performance full-stack Rust web application built with WebAssembl
   - Client-side rendering (CSR) with hydration support
   - Component-based architecture
   - Built-in routing with `leptos_router`
-  - Modern styling with Tailwind CSS
+  - Modern styling with Tailwind CSS v4.0.6
   - WASM-powered for near-native performance
   - Hot Module Reloading (HMR) for rapid development
 
@@ -217,7 +217,7 @@ The built frontend files will be in the `frontend/dist` directory. The optimized
 
 - Full-stack Rust development
 - Server-side rendering with hydration
-- Modern styling with SCSS
+- Modern styling with Tailwind CSS v4.0.6
 - Type-safe API communication
 - Hot Module Reloading (HMR)
 
