@@ -3,25 +3,72 @@ import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import postcss from 'postcss';
 import tailwindcss from '@tailwindcss/postcss';
-import chokidar from 'chokidar';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DIST_DIR = resolve(__dirname, 'dist');
-const INPUT_CSS = resolve(__dirname, 'src/styles/tailwind.css');
+
+// Build configuration
+const BUILD_ENV = process.env.NODE_ENV || 'development';
+const isProduction = BUILD_ENV === 'production';
+
+// Directory configuration
+const BASE_DIR = __dirname;
+const DIST_DIR = resolve(BASE_DIR, 'dist');
+const INPUT_CSS = resolve(BASE_DIR, 'src/styles/tailwind.css');
 const OUTPUT_CSS = resolve(DIST_DIR, 'tailwind.css');
+
+// Environment-specific configurations
+const envConfig = {
+    development: {
+        minify: false
+    },
+    production: {
+        minify: true
+    }
+}[BUILD_ENV];
+
+// Logging utilities
+const log = {
+    info: (msg, ...args) => console.log(`ℹ️  ${msg}`, ...args),
+    success: (msg, ...args) => console.log(`✨ ${msg}`, ...args),
+    warn: (msg, ...args) => console.warn(`⚠️  ${msg}`, ...args),
+    error: (msg, ...args) => console.error(`🚨 ${msg}`, ...args),
+    build: (msg, ...args) => console.log(`🔧 ${msg}`, ...args),
+    debug: (msg, ...args) => !isProduction && console.log(`🔍 ${msg}`, ...args),
+};
+
+// Print build information
+log.build(`Building CSS for ${BUILD_ENV} environment`);
+log.debug('Build configuration:', {
+    environment: BUILD_ENV,
+    minify: envConfig.minify,
+    inputFile: INPUT_CSS,
+    outputFile: OUTPUT_CSS
+});
 
 async function processCss() {
     try {
         // Ensure dist directory exists
         if (!existsSync(DIST_DIR)) {
+            log.debug(`Creating directory: ${DIST_DIR}`);
             mkdirSync(DIST_DIR, { recursive: true });
         }
 
+        log.info('Reading input CSS file...');
         const css = readFileSync(INPUT_CSS, 'utf8');
+
+        log.info('Processing with Tailwind CSS...');
+        const startTime = Date.now();
+        
         const processor = postcss([
             tailwindcss({
-                base: __dirname,
-                content: ['./src/**/*.rs', './index.html']
+                base: BASE_DIR,
+                content: ['./src/**/*.rs', './index.html'],
+                ...(isProduction && {
+                    optimize: {
+                        minify: true,
+                        removeComments: true
+                    }
+                })
             })
         ]);
 
@@ -30,49 +77,35 @@ async function processCss() {
             to: OUTPUT_CSS
         });
 
+        // Write output file
+        log.info('Writing output file...');
         writeFileSync(OUTPUT_CSS, result.css);
-        console.log('✨ CSS built successfully');
+        
+        const buildTime = Date.now() - startTime;
+        log.success(`CSS built successfully for ${BUILD_ENV} in ${buildTime}ms`);
+
+        // Warning handling
+        const warnings = result.warnings();
+        if (warnings.length > 0) {
+            log.warn(`Build completed with ${warnings.length} warning(s):`);
+            warnings.forEach((warning, index) => {
+                log.warn(`[${index + 1}/${warnings.length}] ${warning.text}`);
+                if (warning.node) {
+                    log.debug(`  at ${warning.node.source.start.line}:${warning.node.source.start.column}`);
+                }
+            });
+        }
     } catch (error) {
-        console.error('🚨 Error building CSS:', error);
-        if (!isWatching) process.exit(1);
+        log.error('Build failed:');
+        if (error.name === 'CssSyntaxError') {
+            log.error(`CSS Syntax Error: ${error.message}`);
+            log.debug(`  at ${error.file}:${error.line}:${error.column}`);
+        } else {
+            log.error(error);
+        }
+        process.exit(1);
     }
 }
 
-let isWatching = false;
-
-async function watch() {
-    isWatching = true;
-    console.log('👀 Watching for CSS changes...');
-    
-    // Initial build
-    await processCss();
-
-    // Watch for changes
-    const watcher = chokidar.watch([
-        './src/**/*.rs',
-        './src/**/*.css',
-        './index.html'
-    ], {
-        ignoreInitial: true,
-        awaitWriteFinish: {
-            stabilityThreshold: 100,
-            pollInterval: 100
-        }
-    });
-
-    watcher.on('all', async (event, path) => {
-        console.log(`🔄 Rebuilding CSS due to ${event} in ${path}`);
-        await processCss();
-    });
-}
-
-// Parse command line arguments
-const args = process.argv.slice(2);
-const shouldWatch = args.includes('--watch');
-
-// Run in appropriate mode
-if (shouldWatch) {
-    watch();
-} else {
-    processCss();
-} 
+// Run the build
+processCss(); 
