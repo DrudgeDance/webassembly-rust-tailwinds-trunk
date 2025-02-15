@@ -1,17 +1,70 @@
 # Leptos Full-Stack Application
 
-A full-stack Rust web application using Leptos for the frontend and Axum for the backend.
+A modern, high-performance full-stack Rust web application built with WebAssembly, Rust, and Tailwind CSS. This project uses Trunk as the build tool and development server (instead of cargo-leptos) for an optimized WebAssembly development experience, combining Leptos for the frontend and Axum for the backend.
+
+## Tech Stack
+
+- **WebAssembly (Wasm)** - Compile Rust to WebAssembly for near-native performance in the browser
+- **Rust** - Full-stack type-safe development with memory safety guarantees
+- **Tailwind CSS** - Utility-first CSS framework for modern, responsive design
+- **Trunk** - Modern build tool and development server optimized for Rust/Wasm applications
+- **Leptos** - Reactive web framework for building web applications in Rust
+- **Axum** - Ergonomic and modular web framework for backend development
+
+## Key Features
+
+- **Full-Stack Rust Development**
+  - Type-safe end-to-end Rust development
+  - Shared types between frontend and backend
+  - High performance and memory safety guarantees
+
+- **Frontend (Leptos)**
+  - Client-side rendering (CSR) with hydration support
+  - Component-based architecture
+  - Built-in routing with `leptos_router`
+  - Modern styling with Tailwind CSS
+  - WASM-powered for near-native performance
+  - Hot Module Reloading (HMR) for rapid development
+
+- **Backend (Axum)**
+  - High-performance async web server
+  - Built on top of `tokio` runtime
+  - Middleware support with `tower`
+  - Structured logging with `tracing`
+  - RESTful API endpoints
+  - Type-safe request/response handling
+
+- **Development Experience**
+  - Fast development cycle with hot reloading
+  - Trunk for WASM bundling and serving
+  - Comprehensive build optimization options
+  - Development and production configurations
+  - Structured logging and error handling
+
+- **Production Ready**
+  - Optimized WASM builds with `wasm-opt`
+  - CPU-specific backend optimizations
+  - Configurable deployment options
+  - Production build optimizations
+  - Asset optimization and caching strategies
 
 ## Prerequisites
 
 - Rust (latest stable version)
 - `wasm32-unknown-unknown` target: `rustup target add wasm32-unknown-unknown`
-- Trunk: `cargo install trunk`
+- Trunk: `cargo install trunk` (Note: This project uses Trunk instead of cargo-leptos for better WebAssembly optimization and development experience)
+- Node.js and npm/yarn (for Tailwind CSS processing)
 
 ## Project Structure
 
 - `/frontend` - Leptos frontend application
+  - `/src` - Frontend source code
+  - `/assets` - Static assets
+  - `/style` - CSS and Tailwind configurations
+  - `/scripts` - Build and utility scripts
+
 - `/backend` - Axum backend server
+  - `/src` - Backend source code and API endpoints
 
 ## Development
 
